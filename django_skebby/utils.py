@@ -8,7 +8,11 @@ import requests
 
 SKEBBY_URL = "https://gateway.skebby.it/api/send/smseasy/advanced/http.php"
 
-SKEBBY_METHODS = ('basic', 'classic', 'report')
+SKEBBY_METHODS = {
+    'basic': 'send_sms_basic',
+    'classic': 'send_sms_classic',
+    'report': 'send_sms_classic_report',
+}
 
 SKEBBY_CHARSETS = ('ISO-8859-1', 'UTF-8')
 
@@ -56,7 +60,7 @@ class Sms:
             method = 'basic'
         elif method not in SKEBBY_METHODS:
             raise SkebbySendError("Invalid method")
-        return method
+        return SKEBBY_METHODS.get(method)
 
     def send(self, method=None):
         username = settings.SKEBBY_USERNAME
