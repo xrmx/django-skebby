@@ -4,6 +4,8 @@ from django.template.loader import get_template_from_string
 from django.template.context import Context
 import requests
 
+# FIXME: rework error handling: skebby returns 200 need to check response text
+
 SKEBBY_URL = "https://gateway.skebby.it/api/send/smseasy/advanced/http.php"
 
 SKEBBY_METHODS = ('basic', 'classic', 'report')
@@ -62,13 +64,13 @@ class Sms:
 
         method = self._check_method(method)
 
-        num_remainders = len(recipients)
+        num_remainders = len(self.recipients)
         if not num_remainders:
             raise SkebbySendError("No recipients")
 
         ret = []
         while num_remainders:
-            remainders = recipients[:self.max_recipients]
+            remainders = self.recipients[:self.max_recipients]
             payload = {
                 'recipients': remainders,
                 'method': method,
@@ -81,7 +83,7 @@ class Sms:
             }
             r = requests.post(SKEBBY_URL, data=payload, headers=self.headers)
             num_remainders -= len(remainders)
-            ret.append(r, payload)
+            ret.append((r, payload))
         return ret
 
     def send_single(self, ctx, recipient, method=None):
@@ -93,7 +95,7 @@ class Sms:
         text = smart_str(template.render(Context(ctx)))
 
         payload = {
-            'recipients': remainders,
+            'recipients': recipient,
             'method': method,
             'username': username,
             'password': password,
