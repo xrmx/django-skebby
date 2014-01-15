@@ -4,8 +4,6 @@ from django.template.loader import get_template_from_string
 from django.template.context import Context
 import requests
 
-# FIXME: rework error handling: skebby returns 200 need to check response text
-
 SKEBBY_URL = "https://gateway.skebby.it/api/send/smseasy/advanced/http.php"
 
 SKEBBY_METHODS = {
@@ -25,6 +23,27 @@ class SkebbySmsError(Exception):
 
 class SkebbySendError(Exception):
     pass
+
+def _parse_response(response):
+    try:
+        response.raise_for_status()
+        text = response.text.split('&')
+        result = {}
+        for pair in text:
+            k, v = pair.split('=')
+            result[k] = v
+
+        if result['status'] == 'failed':
+            error_message = result['message']
+            error = True
+        else:
+            error = False
+            error_message = ""
+    except requests.exceptions.HTTPError as e:
+        result = {}
+        error_message = e
+        error = True
+    return { 'response': response, 'error': error, 'message': error_message, 'body': result}
 
 class Sms:
     def __init__(self, text, recipients=None, sender_number=None, sender_string=None, charset=None, ctx=None, headers=None):
@@ -53,14 +72,13 @@ class Sms:
         if self.max_recipients > MAX_RECIPIENTS:
             self.max_recipients = MAX_RECIPIENTS
 
-        self.codes = requests.codes
-
     def _check_method(self, method):
         if not method:
             method = 'basic'
         elif method not in SKEBBY_METHODS:
             raise SkebbySendError("Invalid method")
         return SKEBBY_METHODS.get(method)
+
 
     def send(self, method=None):
         username = settings.SKEBBY_USERNAME
@@ -87,7 +105,7 @@ class Sms:
             }
             r = requests.post(SKEBBY_URL, data=payload, headers=self.headers)
             num_remainders -= len(remainders)
-            ret.append((r, payload))
+            ret.append(_parse_response(r))
         return ret
 
     def send_single(self, ctx, recipient, method=None):
@@ -109,7 +127,7 @@ class Sms:
             'charset': self.charset,
         }
         r = requests.post(SKEBBY_URL, data=payload, headers=self.headers)
-        return (r, payload)
+        return _parse_response(r)
 
 def credit_left():
 
@@ -123,5 +141,4 @@ def credit_left():
     }
 
     r = requests.post(SKEBBY_URL, data=payload)
-    r.raise_for_status()
-    return r.text
+    return _parse_response(r)
