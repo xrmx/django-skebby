@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.conf import settings
 from django.test.utils import override_settings
 from django_skebby.utils import Sms, credit_left, SkebbySmsError
 
@@ -26,3 +27,32 @@ class TestSkebby(TestCase):
         except SkebbySmsError:
             ret = True
         self.assertEqual(ret, True)
+
+    def test_credit_left(self):
+        r = credit_left()
+        credit = r['body']
+        self.assertEqual(True, 'credit_left' in credit)
+        self.assertEqual(True, 'classic_sms' in credit)
+        self.assertEqual(True, 'basic_sms' in credit)
+
+    def test_send(self):
+        try:
+           test_number = settings.SKEBBY_TEST_NUMBER
+        except AttributeError:
+           return
+
+        sms = Sms("Hi there!", [test_number], sender_string="Your Friend")
+        ret = sms.send()
+        failed_requests = [r for r in ret if r['error']]
+        succesful_requests = [r for r in ret if not r['error']]
+        self.assertEqual(len(failed_requests) + len(succesful_requests), 1)
+
+    def test_send_single(self):
+        try:
+           test_number = settings.SKEBBY_TEST_NUMBER
+        except AttributeError:
+           return
+
+        sms = Sms("Hi {{ friend }}!", sender_string="Your Friend")
+        ret = sms.send_single({'friend': 'Doge'}, test_number)
+        self.assertEqual(True, 'error' in ret)
