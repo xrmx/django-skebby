@@ -4,7 +4,10 @@ from django.template.loader import get_template_from_string
 from django.template.context import Context
 import requests
 
-SKEBBY_URL = "https://gateway.skebby.it/api/send/smseasy/advanced/http.php"
+try:
+    SKEBBY_URL = settings.SKEBBY_URL
+except AttributeError:
+    SKEBBY_URL = "https://gateway.skebby.it/api/send/smseasy/advanced/http.php"
 
 SKEBBY_METHODS = {
     'basic': 'send_sms_basic',
