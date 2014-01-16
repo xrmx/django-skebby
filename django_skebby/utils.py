@@ -54,7 +54,7 @@ class Sms:
         self.ctx = {} if ctx is None else ctx
         self.text = smart_str(self.template.render(Context(self.ctx)))
 
-        if sender_number is not None and sender_string is not None:
+        if sender_number and sender_string:
             raise SkebbySmsError("Only one between sender_number and sender_string may be specified")
 
         self.sender_number = sender_number
