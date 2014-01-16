@@ -1,7 +1,7 @@
 django-skebby
 ===================
 
-A simple Django app to send sms with Skebby.
+A simple Django app to send sms by Skebby.
 
 Usage
 -----
@@ -23,7 +23,8 @@ In your code:
 
     # greetings to some people
     template = "Good {{ festivity }}{% if friend %} {{ friend }}{% endif %}!"
-    sms = Sms(template, ["39123456789", "3912346788"], sender_string="Your friend", ctx={'festivity': 'birthday'})
+    ctx = {'festivity': 'birthday'}
+    sms = Sms(template, ["39123456789", "3912346788"], sender_string="Your friend", ctx=ctx)
     ret = sms.send()
     # Skebby has a recipient limit of 50000 numbers that can be raised to 100000 on request
     # The app will take care of itself depending on settings.SKEBBY_MAX_RECIPIENTS
@@ -32,7 +33,8 @@ In your code:
         print "some errors!"
 
     # to a special friend
-    r = sms.send_single({'festivity': birthday, 'friend': 'Doge' }, "3912345679")
+    ctx = {'festivity': birthday, 'friend': 'Doge'}
+    r = sms.send_single(ctx, "3912345679")
     if r['error']:
         print "failed to greet :( %s" % (r['error_message'])
 
