@@ -36,7 +36,7 @@ In your code:
     ctx = {'festivity': birthday, 'friend': 'Doge'}
     r = sms.send_single(ctx, "3912345679")
     if r['error']:
-        print "failed to greet :( %s" % (r['error_message'])
+        print "failed to greet :( %s" % (r['message'])
 
     # check credit
     credit = credit_left()
