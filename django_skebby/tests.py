@@ -55,4 +55,5 @@ class TestSkebby(TestCase):
 
         sms = Sms("Hi {{ friend }}!", sender_string="Your Friend")
         ret = sms.send_single({'friend': 'Doge'}, test_number)
+        self.assertEqual(sms.text, "Hi Doge!")
         self.assertEqual(True, 'error' in ret)

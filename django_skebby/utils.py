@@ -116,8 +116,7 @@ class Sms:
         password = settings.SKEBBY_PASSWORD
 
         method = self._check_method(method)
-        template = get_template_from_string(self.text)
-        text = smart_str(template.render(Context(ctx)))
+        self.text = smart_str(self.template.render(Context(ctx)))
 
         payload = {
             'recipients': recipient,
