@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.conf import settings
 from django.test.utils import override_settings
-from django_skebby.utils import Sms, credit_left, SkebbySmsError
+from django_skebby.utils import Sms, skebby_credit_left, SkebbySmsError
 
 class TestSkebby(TestCase):
     def test_basic_sms(self):
@@ -29,7 +29,7 @@ class TestSkebby(TestCase):
         self.assertEqual(ret, True)
 
     def test_credit_left(self):
-        r = credit_left()
+        r = skebby_credit_left()
         credit = r['body']
         self.assertEqual(True, 'credit_left' in credit)
         self.assertEqual(True, 'classic_sms' in credit)

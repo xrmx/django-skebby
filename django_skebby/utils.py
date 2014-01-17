@@ -131,7 +131,7 @@ class Sms:
         r = requests.post(SKEBBY_URL, data=payload, headers=self.headers)
         return _parse_response(r)
 
-def credit_left():
+def skebby_credit_left():
 
     username = settings.SKEBBY_USERNAME
     password = settings.SKEBBY_PASSWORD

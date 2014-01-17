@@ -19,7 +19,7 @@ In settings.py:
 
 In your code:
 
-    from django_skebby.utils import Sms, credit_left
+    from django_skebby.utils import Sms, skebby_credit_left
 
     # greetings to some people
     template = "Good {{ festivity }}{% if friend %} {{ friend }}{% endif %}!"
@@ -39,7 +39,7 @@ In your code:
         print "failed to greet :( %s" % (r['message'])
 
     # check credit
-    credit = credit_left()
+    credit = skebby_credit_left()
     if credit['error']:
         print "failed to get credit"
     else:
