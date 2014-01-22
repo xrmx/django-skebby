@@ -44,3 +44,24 @@ In your code:
         print "failed to get credit"
     else:
         print credit['body']
+
+A view that returns the credit in json format is available, to enable it add the app:
+
+    INSTALLED_APPS = (
+        ...
+        'django_skebby',
+    )
+
+include the urls:
+
+    url(r'^skebby/', include('django_skebby.urls')),
+
+add use it:
+
+    <script>
+    $.get('/skebby/credit_left/', function(data) {
+        console.log(data['credit_left']);
+        console.log(data['classic_sms']);
+        console.log(data['basic_sms']);
+    });
+    </script>
