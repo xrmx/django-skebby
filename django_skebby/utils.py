@@ -59,6 +59,9 @@ class Sms:
         if sender_number and sender_string:
             raise SkebbySmsError("Only one between sender_number and sender_string may be specified")
 
+        if sender_string and len(sender_string) > 11:
+            raise SkebbySmsError("sender_string too long, 11 chars max")
+
         self.sender_number = sender_number
         self.sender_string = sender_string
 

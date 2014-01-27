@@ -20,6 +20,14 @@ class TestSkebby(TestCase):
             ret = True
         self.assertEqual(ret, True)
 
+    def test_invalid_sender_string(self):
+        ret = False
+        try:
+            sms = Sms("Hi there!", ["123456789"], sender_string="Longer than 11 chars")
+        except SkebbySmsError:
+            ret = True
+        self.assertEqual(ret, True)
+
     def test_invalid_charset(self):
         ret = False
         try:
