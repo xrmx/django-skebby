@@ -28,6 +28,24 @@ class TestSkebby(TestCase):
             ret = True
         self.assertEqual(ret, True)
 
+    def test_invalid_sender_string_basic_method(self):
+        ret = False
+        sms = Sms("Hi there!", ["123456789"], sender_string="Me")
+        try:
+            sms.send(method="basic")
+        except SkebbySmsError:
+            ret = True
+        self.assertEqual(ret, True)
+
+    def test_invalid_sender_number_basic_method(self):
+        ret = False
+        sms = Sms("Hi there!", ["123456789"], sender_number="39123456789")
+        try:
+            sms.send(method="basic")
+        except SkebbySmsError:
+            ret = True
+        self.assertEqual(ret, True)
+
     def test_invalid_charset(self):
         ret = False
         try:

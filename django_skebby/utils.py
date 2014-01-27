@@ -85,6 +85,14 @@ class Sms:
             method = 'basic'
         elif method not in SKEBBY_METHODS:
             raise SkebbySendError("Invalid method")
+
+        # method specific checks
+        if method == "basic":
+            if self.sender_number:
+                raise SkebbySmsError("sender_number not supported with basic method")
+            elif self.sender_string:
+                raise SkebbySmsError("sender_string not supported with basic method")
+
         return SKEBBY_METHODS.get(method)
 
 
