@@ -36,25 +36,15 @@ class TestSkebby(TestCase):
         self.assertEqual(True, 'basic_sms' in credit)
 
     def test_send(self):
-        try:
-           test_number = settings.SKEBBY_TEST_NUMBER
-        except AttributeError:
-           return
-
-        sms = Sms("Hi there!", [test_number], sender_string="Your Friend")
-        ret = sms.send()
+        sms = Sms("Hi there!", ["39123456789"], sender_string="Your Friend")
+        ret = sms.send(method="test")
         failed_requests = [r for r in ret if r['error']]
         succesful_requests = [r for r in ret if not r['error']]
         self.assertEqual(len(failed_requests) + len(succesful_requests), 1)
 
     def test_send_single(self):
-        try:
-           test_number = settings.SKEBBY_TEST_NUMBER
-        except AttributeError:
-           return
-
         sms = Sms("Hi {{ friend }}!", sender_string="Your Friend")
-        ret = sms.send_single({'friend': 'Doge'}, test_number)
+        ret = sms.send_single({'friend': 'Doge'}, "39123456789", method="test")
         self.assertEqual(sms.text, "Hi Doge!")
         self.assertEqual(True, 'error' in ret)
         self.assertEqual(True, 'message' in ret)

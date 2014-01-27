@@ -13,6 +13,7 @@ SKEBBY_METHODS = {
     'basic': 'send_sms_basic',
     'classic': 'send_sms_classic',
     'report': 'send_sms_classic_report',
+    'test': 'test_send_sms_classic',
 }
 
 SKEBBY_CHARSETS = ('ISO-8859-1', 'UTF-8')
