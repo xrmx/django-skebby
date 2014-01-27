@@ -28,22 +28,22 @@ In your code:
     ret = sms.send()
     # Skebby has a recipient limit of 50000 numbers that can be raised to 100000 on request
     # The app will take care of itself depending on settings.SKEBBY_MAX_RECIPIENTS
-    failed_requests = [r for r in ret['body'] if r['error']]
+    failed_requests = [r for r in ret if r.skebby_error]
     if failed_requests:
         print "some errors!"
 
     # to a special friend
     ctx = {'festivity': birthday, 'friend': 'Doge'}
     r = sms.send_single(ctx, "3912345679")
-    if r['error']:
-        print "failed to greet :( %s" % (r['message'])
+    if r.skebby_error:
+        print "failed to greet :( %s" % (r.skebby_response)
 
     # check credit
     credit = skebby_credit_left()
-    if credit['error']:
+    if credit.skebby_error:
         print "failed to get credit"
     else:
-        print credit['body']
+        print credit.skebby_response
 
 A view that returns the credit in json format is available, to enable it add the app:
 

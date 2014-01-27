@@ -36,18 +36,19 @@ def _parse_response(response):
         for pair in text:
             k, v = pair.split('=')
             result[k] = v
+        response.skebby_response = result
 
         if result['status'] == 'failed':
-            error_message = result['message']
-            error = True
+            response.skebby_error_ = True
+            response.skebby_message = result['message']
         else:
-            error = False
-            error_message = ""
+            response.skebby_error = False
+            response.skebby_message = ""
     except requests.exceptions.HTTPError as e:
-        result = {}
-        error_message = e
-        error = True
-    return { 'response': response, 'error': error, 'message': error_message, 'body': result}
+        response.skebby_response = {}
+        response.skebby_message = e
+        response.skebby_error = True
+    return response
 
 class Sms:
     def __init__(self, text, recipients=None, sender_number=None, sender_string=None, charset=None, ctx=None, headers=None):
