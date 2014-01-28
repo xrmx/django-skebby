@@ -85,7 +85,7 @@ class Sms:
             try:
                 method = settings.SKEBBY_DEFAULT_METHOD
             except AttributeError:
-                method = "basic"
+                method = "classic"
 
         if method not in SKEBBY_METHODS:
             raise SkebbySendError("Invalid send method")
