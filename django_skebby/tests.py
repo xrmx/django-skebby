@@ -1,7 +1,6 @@
 from django.test import TestCase
-from django.conf import settings
 from django.test.utils import override_settings
-from django_skebby.utils import Sms, skebby_credit_left, SkebbySmsError
+from django_skebby.utils import Sms, skebby_credit_left, SkebbySmsError, SkebbySendError
 
 class TestSkebby(TestCase):
     def test_basic_sms(self):
@@ -74,3 +73,13 @@ class TestSkebby(TestCase):
         self.assertEqual(sms.text, "Hi Doge!")
         self.assertEqual(False, ret.skebby_error)
         self.assertEqual("", ret.skebby_message)
+
+    @override_settings(SKEBBY_DEFAULT_METHOD='foobar')
+    def test_default_invalid_method(self):
+        ret = False
+        sms = Sms("Hi there!", ["123456789"])
+        try:
+            sms.send()
+        except SkebbySendError:
+            ret = True
+        self.assertEqual(ret, True)

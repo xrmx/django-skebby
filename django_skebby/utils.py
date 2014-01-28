@@ -82,9 +82,13 @@ class Sms:
 
     def _check_method(self, method):
         if not method:
-            method = 'basic'
-        elif method not in SKEBBY_METHODS:
-            raise SkebbySendError("Invalid method")
+            try:
+                method = settings.SKEBBY_DEFAULT_METHOD
+            except AttributeError:
+                method = "basic"
+
+        if method not in SKEBBY_METHODS:
+            raise SkebbySendError("Invalid send method")
 
         # method specific checks
         if method == "basic":
