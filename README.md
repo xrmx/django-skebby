@@ -17,6 +17,9 @@ In settings.py:
     # If you have *requested and obtained* the raise to 100000 messages per request
     #SKEBBY_MAX_RECIPIENTS = 100000
 
+    # default method is classic
+    SKEBBY_DEFAULT_METHOD = "basic"
+
 In your code:
 
     from django_skebby.utils import Sms, skebby_credit_left
