@@ -32,7 +32,7 @@ class TestSkebby(TestCase):
         sms = Sms("Hi there!", ["123456789"], sender_string="Me")
         try:
             sms.send(method="basic")
-        except SkebbySmsError:
+        except SkebbySendError:
             ret = True
         self.assertEqual(ret, True)
 
@@ -41,7 +41,7 @@ class TestSkebby(TestCase):
         sms = Sms("Hi there!", ["123456789"], sender_number="39123456789")
         try:
             sms.send(method="basic")
-        except SkebbySmsError:
+        except SkebbySendError:
             ret = True
         self.assertEqual(ret, True)
 
