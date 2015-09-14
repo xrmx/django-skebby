@@ -9,6 +9,11 @@ try:
 except AttributeError:
     SKEBBY_URL = "https://gateway.skebby.it/api/send/smseasy/advanced/http.php"
 
+try:
+    SKEBBY_VERIFY_SSL_CERTIFICATE = settings.SKEBBY_VERIFY_SSL_CERTIFICATE
+except AttributeError:
+    SKEBBY_VERIFY_SSL_CERTIFICATE = True
+
 SKEBBY_METHODS = {
     'basic': 'send_sms_basic',
     'classic': 'send_sms_classic',
@@ -126,7 +131,7 @@ class Sms:
                 'sender_string': self.sender_string,
                 'charset': self.charset,
             }
-            r = requests.post(SKEBBY_URL, data=payload, headers=self.headers)
+            r = requests.post(SKEBBY_URL, data=payload, headers=self.headers, verify=SKEBBY_VERIFY_SSL_CERTIFICATE)
             num_remainders -= len(remainders)
             ret.append(_parse_response(r))
         return ret
@@ -148,7 +153,7 @@ class Sms:
             'sender_string': self.sender_string,
             'charset': self.charset,
         }
-        r = requests.post(SKEBBY_URL, data=payload, headers=self.headers)
+        r = requests.post(SKEBBY_URL, data=payload, headers=self.headers, verify=SKEBBY_VERIFY_SSL_CERTIFICATE)
         return _parse_response(r)
 
 
@@ -163,5 +168,5 @@ def skebby_credit_left():
         'password': password,
     }
 
-    r = requests.post(SKEBBY_URL, data=payload)
+    r = requests.post(SKEBBY_URL, data=payload, verify=SKEBBY_VERIFY_SSL_CERTIFICATE)
     return _parse_response(r)
