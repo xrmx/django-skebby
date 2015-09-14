@@ -1,6 +1,5 @@
 from django.http import HttpResponse
 from django_skebby.utils import skebby_credit_left
-import requests
 import json
 
 
