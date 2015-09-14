@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.test.utils import override_settings
 from django_skebby.utils import Sms, skebby_credit_left, SkebbySmsError, SkebbySendError
 
+
 class TestSkebby(TestCase):
     def test_basic_sms(self):
         sms = Sms("Hi there!", ["123456789"], sender_string="Your Friend")

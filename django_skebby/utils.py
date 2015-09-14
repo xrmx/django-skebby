@@ -22,11 +22,14 @@ DEFAULT_MAX_RECIPIENTS = 50000
 # this must be agreed with skebby
 MAX_RECIPIENTS = 100000
 
+
 class SkebbySmsError(Exception):
     pass
 
+
 class SkebbySendError(Exception):
     pass
+
 
 def _parse_response(response):
     try:
@@ -49,6 +52,7 @@ def _parse_response(response):
         response.skebby_message = e
         response.skebby_error = True
     return response
+
 
 class Sms:
     def __init__(self, text, recipients=None, sender_number=None, sender_string=None, charset=None, ctx=None, headers=None):
@@ -99,7 +103,6 @@ class Sms:
 
         return SKEBBY_METHODS.get(method)
 
-
     def send(self, method=None):
         username = settings.SKEBBY_USERNAME
         password = settings.SKEBBY_PASSWORD
@@ -147,6 +150,7 @@ class Sms:
         }
         r = requests.post(SKEBBY_URL, data=payload, headers=self.headers)
         return _parse_response(r)
+
 
 def skebby_credit_left():
 

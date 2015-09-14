@@ -30,5 +30,5 @@ setup(
     ],
     packages=find_packages(exclude=["example", "example.*"]),
     include_package_data=True,
-    zip_safe = False,
+    zip_safe=False,
 )
