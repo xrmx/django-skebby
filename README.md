@@ -11,7 +11,10 @@ In settings.py:
     SKEBBY_USERNAME = 'yourskebbyusername'
     SKEBBY_PASSWORD = 'yourskebbypassword'
 
-    # if SSL does not work
+    # If SSL cert is not valid
+    SKEBBY_VERIFY_SSL_CERTIFICATE = False
+
+    # If SSL does not work at all
     #SKEBBY_URL = "http://gateway.skebby.it/api/send/smseasy/advanced/http.php"
 
     # If you have *requested and obtained* the raise to 100000 messages per request
