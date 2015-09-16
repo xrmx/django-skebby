@@ -1,8 +1,13 @@
 from django.conf import settings
 from django.utils.encoding import smart_str
-from django.template.loader import get_template_from_string
 from django.template.context import Context
 import requests
+
+try:
+    from django.template.loader import get_template_from_string
+except ImportError:
+    from django.template import Engine
+    get_template_from_string = Engine().from_string
 
 try:
     SKEBBY_URL = settings.SKEBBY_URL
